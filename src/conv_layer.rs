@@ -94,6 +94,40 @@ impl Layer for ConvLayer {
                             }
                         }
                     }
+                    self.output.clone()
+                }
+
+                // Backpropagates the gradient through the convolutional layer
+  
+                // Get upflowing gradient
+                fn back_propagate(&mut self, error: Vec<Vec<Vec<f32>>>) -> Vec<Vec<Vec<f32>>> {
+                    let mut prev_error: Vec<Vec<Vec<f32>>> = vec![vec![vec![0.0; self.input_size]; self.input_size]; self.input_depth];
+
+                    let mut new_kernels: Vec<Vec<Vec<Vec<f32>>>> = self.kernels.clone();
+
+                    // Iterate through each output point in the output matrix
+                    for y in 0..self.output_size {
+                        for x in 0..self.output_size {
+                            // calculate the receptive field coordinates for the current output point
+                            let left = x * self.stride;
+                            let top = y * self.stride;
+                            // Iterate through each filter in the network
+                            for f in 0..self.num_filters {
+                                // Only update parameters which affect the output
+                                if self.output[f][y][x] > 0.0 {
+                                    self.biases[f] -= error[f][y][x] * LEARNING_RATE;
+                                    for y_k in 0..self.kernel_size {
+                                        for x_k in 0..self.kernel_size {
+                                            for f_i in 0..self.input_depth {
+                                                // Update the error for the previous layer
+                                                prev_error[f_i][top + y_k][lef + x_k] += self.kernels[f][f_i][y_k][x_k] * error[f][y][x];
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
