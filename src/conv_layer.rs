@@ -91,12 +91,26 @@ impl Layer for ConvLayer {
                                 let val: f32 = input[f_i][top + y_k][left + x_k];
                                 // Store the result of the convolution in the output matrix
                                 self.output[f][y][x] += self.kernels[f][f_i][y_k][x_k] * val;
+
+
                             }
                         }
                     }
-                    self.output.clone()
                 }
+            }
+        }
 
+        // Apply the ReLU activation function to the output.
+        for f in 0..self.num_filters {
+            for y in 0..self.output_size {
+                for x in 0..self.output_size {
+                    self.output[f][y][x] = self.output[f][y][x].max(0.0);
+                }
+            }
+        }
+
+        self.output.clone()     
+    }                          
                 // Backpropagates the gradient through the convolutional layer
   
                 // Get upflowing gradient
@@ -130,15 +144,4 @@ impl Layer for ConvLayer {
                     }
                 }
             }
-        }
-
-        // Apply the ReLU activation function to the output
-        for i in 0..self.num_filters {
-            for y in 0..output_size {
-                for x in 0..self.output_size {
-                    self.output[f][y][x] = self.output[f][y][x].max(0.0);
-                }
-            }
-        }
-    }
-}
+        
