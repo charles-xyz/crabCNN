@@ -130,11 +130,13 @@ impl Layer for ConvLayer {
                                 // Only update parameters which affect the output
                                 if self.output[f][y][x] > 0.0 {
                                     self.biases[f] -= error[f][y][x] * LEARNING_RATE;
-                                    for y_k in 0..self.kernel_size {
-                                        for x_k in 0..self.kernel_size {
-                                            for f_i in 0..self.input_depth {
+                                    for f_i in 0..self.input_depth {
+                                        for y_k in 0..self.kernel_size {
+                                            for x_k in 0..self.kernel_size {
                                                 // Update the error for the previous layer
-                                                prev_error[f_i][top + y_k][lef + x_k] += self.kernels[f][f_i][y_k][x_k] * error[f][y][x];
+                                                prev_error[f_i][top + y_k][left + x_k] += self.kernels[f][f_i][y_k][x_k] * error[f][y][x];
+                                                // Store the new kernel values
+                                                new_kernels[f][f_i][y_k][x_k] -= self.input[f_i][top +y_k][left + x_k] * error[f][y][x] * LEARNING_RATE;
                                             }
                                         }
                                     }
@@ -142,6 +144,9 @@ impl Layer for ConvLayer {
                             }
                         }
                     }
+                    self.kernels = new_kernels;
+
+                    return prev_error
                 }
             }
         
