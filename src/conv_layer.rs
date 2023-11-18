@@ -148,5 +148,9 @@ impl Layer for ConvLayer {
 
                     return prev_error
                 }
+
+                fn get_output(&mut self, _index: usize) -> f32 {
+                    panic!("Convolutional layers should not be accessed directly")
+                }
             }
         
