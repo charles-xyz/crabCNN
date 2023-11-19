@@ -10,7 +10,7 @@ pub struct ConvLayer {
     kernel_size: usize,
     output_size: usize,
     stride: usize,
-    biases: Veec<f32>,
+    biases: Vec<f32>,
     kernels: Vec<Vec<Vec<Vec<f32>>>>,
     input: Vec<Vec<Vec<f32>>>,
     output: Vec<Vec<Vec<f32>>>,
@@ -23,7 +23,7 @@ impl ConvLayer {
         input_size: usize,
         input_depth: usize,
         num_filters: usize,
-        ketnel_size: usize,
+        kernel_size: usize,
         stride: usize,
     ) -> ConvLayer {
         let mut biases = vec![];
