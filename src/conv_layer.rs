@@ -1,6 +1,6 @@
 use rand_distr::{Normal, Distribution};
 
-use crate::{LEARNING_RATE, layer::layer};
+use crate::{LEARNING_RATE, layer::Layer};
 
 // Define 'ConvolutionalLayer' struct
 pub struct ConvLayer {
@@ -30,12 +30,12 @@ impl ConvLayer {
         let mut kernels = vec![vec![vec![vec![]; kernel_size]; input_depth]; num_filters];
 
         // Use He initialization
-        let normal = Normal::new(0.0 (2.0/(input_depth*kernel_size.pow(2) as f32).sqrt()).unwrap());
+        let normal = Normal::new(0.0, (2.0/(input_size.pow(2) * input_depth) as f32).sqrt()).unwrap();
 
         // Fill the biases and kernels with random values from the normal distribution
         for f in 0..num_filters {
             biases.push(0.1);
-            for i in 0.kernel_size {
+            for i in 0..kernel_size {
                 for j in 0..kernel_size {
                     for _ in 0..kernel_size {
                         kernels[f][i][j].push(normal.sample(&mut rand::thread_rng()));

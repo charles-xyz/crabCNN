@@ -6,6 +6,12 @@ pub fn sigmoid(x: f32) -> f32 {
     1.0 / (1.0 + (-x).exp())
 }
 
+/// Inverse derivative of the sigmoid function
+pub fn inv_deriv_sigmoid(x: f32) -> f32 {
+    x * (1.0 - x)
+}
+
+
 pub struct FullyConnectedLayer {
     input_size: usize,
     input_width: usize,
@@ -29,7 +35,7 @@ impl FullyConnectedLayer {
         
         // Initialize empty vectors for the biases and weights
         let mut biases: Vec<f32> = vec![];
-        let mut weights: Vec<Vec<f32>> = vec![vec![], input_size];
+        let mut weights: Vec<Vec<f32>> = vec![vec![]; input_size];
 
         // He initialization, 0 mean
         let normal = Normal::new(0.0, (2.0/(input_size.pow(2) * input_depth) as f32).sqrt()).unwrap();
