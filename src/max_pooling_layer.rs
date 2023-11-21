@@ -78,7 +78,7 @@ impl Layer for MaxPoolingLayer {
                 for f in 0..self.input_depth {
                     let m: (usize, usize) = self.highest_index[f][y][x];
                     // Update the input error value with the corresponding output error value
-                    prev[f][m.0][m.1] = error[f][y][x];
+                    prev_error[f][m.0][m.1] = error[f][y][x];
                 }
             }
         }
