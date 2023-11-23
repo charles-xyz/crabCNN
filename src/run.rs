@@ -17,4 +17,15 @@ pub fn run() {
             .validation_set_length(10_000)
             .test_set_length(10_000)
             .finalize();
+    
+    let train_data: Vec<Vec<Vec<f32>>> = format_images(trn_img, 50_000);
+    let train_labels: Vec<u8> = trn_lbl;
+
+    let _test_data: Vec<Vec<Vec<f32>>> = format_images(tst_img, 10_000);
+    let _test_labels: Vec<u8> = tst_lbl;
+
+    // Create a new CNN and specify its layers
+    let mut cnn: CNN = CNN::new();
+    cnn.add_conv_layer(28, 1, 6, 5, 1);
+    
 }
